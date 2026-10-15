@@ -1,0 +1,11 @@
+pmOnFail: ignore
+
+minimumReleaseAgeExclude:
+  - '@next/*'
+  - next
+
+allowBuilds:
+  '@mongodb-js/zstd': set this to true or false
+  esbuild: true
+  node-liblzma: set this to true or false
+  sharp: false
