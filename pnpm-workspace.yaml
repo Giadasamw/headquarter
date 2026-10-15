@@ -5,7 +5,7 @@ minimumReleaseAgeExclude:
   - next
 
 allowBuilds:
-  '@mongodb-js/zstd': set this to true or false
+  '@mongodb-js/zstd': false
   esbuild: true
-  node-liblzma: set this to true or false
+  node-liblzma: false
   sharp: false
