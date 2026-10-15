@@ -1,6 +1,6 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-export const TIMEZONE = "Europe/Paris";
+export const TIMEZONE = "Europe/London";
 
 let client: SupabaseClient | undefined;
 
