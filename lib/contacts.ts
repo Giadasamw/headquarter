@@ -3,14 +3,25 @@
 // so call these only from Server Components, Route Handlers or Server Actions.
 import { db, unwrap } from '@/agent/lib/db'
 
-/** Contacts of this type are real leads; any other type is a validation conversation. */
-export const REAL_CONTACT_TYPE = 'realtà'
+// The only values the database accepts (see the contacts_type_check / contacts_status_check rules).
+export const CONTACT_TYPES = ['azienda', 'conversazione'] as const
+export const CONTACT_STATUSES = [
+  'grezzo',
+  'da contattare',
+  'attivo',
+  'in trattativa',
+  'spento',
+  'rifiutato',
+] as const
+
+export type ContactType = (typeof CONTACT_TYPES)[number]
+export type ContactStatus = (typeof CONTACT_STATUSES)[number]
 
 export type Contact = {
   id: string
   name: string | null
   contact_person: string | null
-  status: string | null
+  status: ContactStatus | null
   last_update: string | null
   last_direction: string | null
   email: string | null
@@ -19,7 +30,7 @@ export type Contact = {
   offer: string | null
   summary: string | null
   next_step: string | null
-  type: string | null
+  type: ContactType | null
 }
 
 export type ContactChanges = Partial<Omit<Contact, 'id'>>
@@ -43,18 +54,18 @@ const PROTOTYPE_COLUMNS = 'id, title, figma_url, status, sent_at, notes, created
 
 /**
  * Contacts, most recently updated first.
- * By default only real contacts (type "realtà"); pass `onlyReal: false` to include validation conversations.
+ * By default only companies (type "azienda"); pass `onlyCompanies: false` to include validation conversations.
  */
 export async function listContacts(
-  filters: { status?: string; onlyReal?: boolean } = {},
+  filters: { status?: ContactStatus; onlyCompanies?: boolean } = {},
 ): Promise<Contact[]> {
-  const { status, onlyReal = true } = filters
+  const { status, onlyCompanies = true } = filters
   let query = db()
     .from('contacts')
     .select(CONTACT_COLUMNS)
     .order('last_update', { ascending: false, nullsFirst: false })
   if (status) query = query.eq('status', status)
-  if (onlyReal) query = query.eq('type', REAL_CONTACT_TYPE)
+  if (onlyCompanies) query = query.eq('type', 'azienda')
   return unwrap(await query) as unknown as Contact[]
 }
 
