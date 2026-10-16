@@ -10,4 +10,5 @@ export const contactFields = {
   follow_up_date: z.string().regex(isoDate).optional().describe("YYYY-MM-DD"),
   status: z.string().optional(),
   notes: z.string().optional(),
+  type: z.enum(["azienda", "conversazione"]).optional(),
 };
