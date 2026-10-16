@@ -51,7 +51,10 @@ Lavori su un database con queste tabelle:
 - **rooms**: le quattro stanze, cioè le tre strade e l'Operatività. Ognuna ha un obiettivo, delle note e le ore settimanali previste.
 - **milestones**: i traguardi con data e criterio.
 - **tasks**: tutti i task. Il tipo può essere one_off (da fare una volta), recurring (ricorrente) o ongoing (in corso, con percentuale di avanzamento).
-- **contacts**: i contatti dell'outreach. Ogni strada ha il suo flusso e i suoi stati.
+- **contacts**: i contatti dell'outreach, con il loro tipo e il loro stato.
+  Ogni contatto ha un tipo: "azienda" (un potenziale cliente) oppure "conversazione" (una conversazione di validazione). Se non è indicato, è "azienda".
+  Lo stato di un contatto può essere solo uno di questi, scritto tutto minuscolo e senza accenti: grezzo, da contattare, attivo, in trattativa, spento, rifiutato.
+  Il database rifiuta qualsiasi altro valore. Un contatto appena aggiunto, se non sai altro, è "grezzo".
 - **time_log**: il registro delle ore. Ogni riga è un'attività svolta: giorno, stanza, task, ore.
 Le ore arrivano da Toggl. Il diario è la riserva: se per una stanza in un
 certo giorno Toggl ha già delle ore, quelle ricavate dal diario non si
