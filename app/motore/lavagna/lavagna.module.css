@@ -15,7 +15,27 @@
   padding: 64px 24px 80px;
 }
 .container { width: 100%; max-width: 70vw; margin: 0 auto; }
-.header { margin-bottom: 40px; }
+.header { margin-bottom: 32px; }
+.homeLink { font-size: 13px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+.homeLink:hover { color: var(--ink); text-decoration: underline; }
+.metrics { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; margin-bottom: 40px; }
+.metric { display: flex; flex-direction: column; gap: 8px; padding: 24px; border: 1px solid var(--line); border-radius: 24px; }
+.metric > span { font-size: 13px; color: var(--muted); }
+.metric strong { font-size: 40px; font-weight: 500; line-height: 1.2; }
+.metric small { font-size: 13px; font-weight: 400; color: var(--muted); }
+.goal { background: color-mix(in srgb,var(--mint) 18%,var(--canvas)); }
+.goal progress { width: 100%; height: 6px; border: 0; border-radius: 8px; overflow: hidden; appearance: none; }
+.goal progress::-webkit-progress-bar { background: var(--line); }
+.goal progress::-webkit-progress-value { background: var(--ink); }
+.goal progress::-moz-progress-bar { background: var(--ink); }
+.rowArrow { margin-left: 12px; color: var(--muted); display: inline-block; transition: transform .15s; }
+.table tbody tr { cursor: pointer; transition: background .15s; }
+.table tbody tr:hover,.table tbody tr:focus-within { background: color-mix(in srgb,var(--coral,#ff9473) 12%,var(--canvas)); }
+.table tbody tr:hover .rowArrow { transform: translate(2px,-2px); }
+.table tbody a { display: flex; align-items: center; justify-content: space-between; gap: 16px; text-decoration: none; font-weight: 500; }
+.table a:focus-visible,.homeLink:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+@media(max-width:1100px) { .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .metric { padding:16px; } .metrics { gap:8px; } }
 .eyebrow { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
 .headingRow { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .title { font-family: Georgia, Cambria, 'Times New Roman', serif; font-size: 48px; line-height: 1.2; letter-spacing: -.02em; font-weight: 400; margin: 0 0 16px; }
@@ -45,7 +65,7 @@
 .table { width: 100%; text-align: left; border-collapse: collapse; font-size: 13px; }
 .table thead { color: var(--muted); }
 .table th { font-weight: 400; }
-.table th, .table td { padding: 24px 16px; border-bottom: 1px solid var(--line); }
+.table th, .table td { padding: 20px 16px; border-bottom: 1px solid var(--line); }
 .table th:first-child, .table td:first-child { padding-left: 8px; width: 32px; }
 .table tbody th { font-size: 16px; min-width: 160px; }
 .table td:last-child { white-space: nowrap; color: var(--muted); }
