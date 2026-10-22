@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'
 import { Bricolage_Grotesque } from 'next/font/google'
 import { CONTACT_STATUSES, getContact, listPrototypesForContact } from '@/lib/contacts'
 import { ContactControls } from './contact-controls'
+import { CopyEmail } from './copy-email'
+import { ExternalLink } from 'lucide-react'
 import styles from './scheda.module.css'
 
 const font = Bricolage_Grotesque({ subsets: ['latin'], weight: ['400', '500'] })
@@ -29,6 +31,6 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
       <section className={styles.card}><h2>Riassunto dell&apos;interazione</h2><p><Value value={contact.summary} /></p></section>
       <section className={styles.card}><h2>Prototipi mandati</h2>{prototypes.length ? <ul className={styles.prototypes}>{prototypes.map(prototype => { const url = safeUrl(prototype.figma_url); return <li key={prototype.id} className={!prototype.sent_at ? styles.draft : undefined}>{url ? <a href={url} target="_blank" rel="noopener noreferrer">{prototype.title} ↗</a> : <span>{prototype.title}</span>}<small>{prototype.sent_at ? <>Mandato il <DateValue value={prototype.sent_at} /></> : 'Bozza, non ancora mandata'}</small></li> })}</ul> : <p>Non sono ancora stati mandati prototipi.</p>}</section>
       <section className={styles.card}><h2>Proposta offerta</h2><p><Value value={contact.offer} /></p></section>
-    </div><aside className={styles.aside}><h2>Anagrafica</h2><dl><dt>Referente</dt><dd><Value value={contact.contact_person} /></dd><dt>Email</dt><dd><Value value={contact.email} /></dd><dt>Paese e zona di mercato</dt><dd><Value value={contact.location} /></dd><dt>Fuso orario</dt><dd><Value value={contact.timezone} /></dd><dt className={styles.divider}>Ultimo aggiornamento</dt><dd><DateValue value={contact.last_update} /></dd></dl></aside></div>
+    </div><aside className={styles.aside}><h2>Anagrafica</h2><dl><dt>Referente</dt><dd><Value value={contact.contact_person} /></dd><dt>Email</dt><dd>{contact.email?.trim() ? <CopyEmail email={contact.email} /> : <Empty />}</dd><dt>Link</dt><dd>{safeUrl(contact.link) ? <a className={styles.externalLink} href={safeUrl(contact.link)!} target="_blank" rel="noopener noreferrer" aria-label="Apri il sito del contatto in una nuova scheda">{new URL(safeUrl(contact.link)!).hostname}<ExternalLink size={16} aria-hidden="true" /></a> : <span className={styles.missing}>Non indicato</span>}</dd><dt>Paese e zona di mercato</dt><dd><Value value={contact.location} /></dd><dt>Fuso orario</dt><dd><Value value={contact.timezone} /></dd><dt className={styles.divider}>Ultimo aggiornamento</dt><dd><DateValue value={contact.last_update} /></dd></dl></aside></div>
   </div></main>
 }

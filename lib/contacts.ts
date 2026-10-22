@@ -26,6 +26,7 @@ export type Contact = {
   last_update: string | null
   last_direction: string | null
   email: string | null
+  link: string | null
   location: string | null
   timezone: string | null
   offer: string | null
@@ -49,7 +50,7 @@ export type Prototype = {
 // In the table the company is `company` and the person is `person` (Sophie writes those),
 // so the app's `name` and `contact_person` are aliases of those two columns.
 const CONTACT_COLUMNS =
-  'id, name:company, contact_person:person, status, created_at, last_update, last_direction, email, location, timezone, offer, summary, next_step, type'
+  'id, name:company, contact_person:person, status, created_at, last_update, last_direction, email, link, location, timezone, offer, summary, next_step, type'
 
 const PROTOTYPE_COLUMNS = 'id, title, figma_url, status, sent_at, notes, created_at'
 
