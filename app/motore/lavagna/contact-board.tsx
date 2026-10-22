@@ -15,7 +15,7 @@ function UpdatedDate({ value }: { value: string | null }) {
   return <time dateTime={value}>{dateFormat.format(new Date(value))}</time>
 }
 
-export function ContactBoard({ contacts, statuses }: { contacts: BoardContact[]; statuses: readonly ContactStatus[] }) {
+export function ContactBoard({ contacts, statuses, weeklyCount }: { contacts: BoardContact[]; statuses: readonly ContactStatus[]; weeklyCount: number }) {
   const [status, setStatus] = useState('')
   const [search, setSearch] = useState('')
   const filtered = contacts.filter(contact => (!status || contact.status === status) && (contact.name ?? '').toLocaleLowerCase('it').includes(search.trim().toLocaleLowerCase('it')))
@@ -24,7 +24,7 @@ export function ContactBoard({ contacts, statuses }: { contacts: BoardContact[];
       <p className={styles.eyebrow}>Quartier generale / Motore</p>
       <div className={styles.headingRow}><div><h1 className={styles.title}>Lavagna contatti</h1><p className={styles.subtitle}>Le relazioni, un contatto alla volta.</p></div><span className={styles.readOnly}>Solo lettura</span></div>
     </header>
-    <section className={styles.weekly} aria-labelledby="weekly-title"><div><h2 id="weekly-title">Contatti nuovi questa settimana</h2><p>Obiettivo: 5 contatti negli ultimi 7 giorni.</p></div><div className={styles.weeklyValue}>Dato non disponibile <span>su 5</span></div><p className={styles.weeklyNote}>Il conteggio sarà disponibile quando verrà registrata la data di inserimento dei contatti.</p></section>
+    <section className={styles.weekly} aria-labelledby="weekly-title"><div><h2 id="weekly-title">Contatti nuovi questa settimana</h2><p>Obiettivo: 5 contatti negli ultimi 7 giorni.</p></div><div className={styles.weeklyValue}>{weeklyCount} <span>su 5</span></div><p className={styles.weeklyNote}>Sono conteggiati i contatti con stato da contattare. I contatti precedenti senza data di inserimento sono esclusi.</p></section>
     <section aria-label="Elenco contatti">
       <div className={styles.filters}><label className={styles.field}>Stato<select value={status} onChange={event => setStatus(event.target.value)}><option value="">Tutti gli stati</option>{statuses.map(value => <option key={value} value={value}>{value}</option>)}</select></label><label className={`${styles.field} ${styles.search}`}>Cerca azienda<input type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Nome dell’azienda" /></label></div>
       <div className={styles.listMeta}><p aria-live="polite">{filtered.length} {filtered.length === 1 ? 'contatto' : 'contatti'}</p><div className={styles.legend}><span><Direction direction="in" />Tocca a noi</span><span><Direction direction="out" />Aspettiamo risposta</span></div></div>
