@@ -3,7 +3,7 @@ export const MORNING_TIMEZONE = "Europe/London";
 export const MORNING_HOUR = 7;
 
 export const MORNING_MESSAGE =
-  "Sveglia del mattino. Le ore di Toggl degli ultimi 3 giorni sono già nel registro. Leggi il diario di ieri: aggiorna i task, e registra nel registro delle ore le attività che racconta con origine diario (se Toggl ha già ore per quella stanza e quel giorno, il conteggio usa Toggl da solo). Se get_overview mostra incongruenze con Toggl, segnalale nel briefing. Poi scrivi e salva il briefing di oggi seguendo le tue istruzioni. Oggi è venerdì? Allora prepara la revisione della settimana. Ultimo passo obbligatorio: salva il briefing usando lo strumento write_briefing. Se non lo salvi, il lavoro non è finito.";
+  "Sveglia del mattino. Le ore di Toggl degli ultimi 3 giorni sono già nel registro. Leggi il diario di ieri: aggiorna i task e i contatti (list_contacts per trovarli, poi add_contact o update_contact; scrivi da sola e non elencarlo nel briefing), e registra nel registro delle ore le attività che racconta con origine diario (se Toggl ha già ore per quella stanza e quel giorno, il conteggio usa Toggl da solo). Se get_overview mostra incongruenze con Toggl, segnalale nel briefing. Poi scrivi e salva il briefing di oggi seguendo le tue istruzioni. Oggi è venerdì? Allora prepara la revisione della settimana. Ultimo passo obbligatorio: salva il briefing usando lo strumento write_briefing. Se non lo salvi, il lavoro non è finito.";
 
 function offsetMinutes(date: Date): number {
   const name = new Intl.DateTimeFormat("en-US", { timeZone: MORNING_TIMEZONE, timeZoneName: "longOffset" })
