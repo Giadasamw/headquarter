@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'
 import { Bricolage_Grotesque } from 'next/font/google'
 import { CONTACT_STATUSES, getContact, listPrototypesForContact } from '@/lib/contacts'
 import { ContactControls } from './contact-controls'
+import { CopyEmail } from './copy-email'
+import { ExternalLink } from 'lucide-react'
 import styles from './scheda.module.css'
 
 const font = Bricolage_Grotesque({ subsets: ['latin'], weight: ['400', '500'] })
@@ -23,12 +25,12 @@ export default async function ContactPage({ params }: { params: Promise<{ id: st
   const direction = contact.last_direction
   return <main className={`${styles.page} ${font.className}`}><div className={styles.container}>
     <Link className={styles.back} href="/motore/lavagna">← Torna alla lavagna</Link>
-    <header className={styles.header}><div><h1>{contact.name || 'Azienda non indicata'}</h1><div className={styles.meta}><span className={styles.status}>{contact.status || 'Stato non indicato'}</span><span className={styles.turn}>{direction && <span aria-hidden="true" className={`${styles.dot} ${direction === 'in' ? styles.incoming : styles.outgoing}`} />}{direction === 'in' ? 'Tocca a te rispondere' : direction === 'out' ? 'Hai risposto, aspetti' : 'Turno non indicato'}</span></div></div><ContactControls id={id} status={contact.status} statuses={CONTACT_STATUSES} /></header>
+    <header className={styles.header}><div><h1>{contact.name || 'Azienda non indicata'}</h1><div className={styles.meta}><span className={styles.status}>{contact.status || 'Stato non indicato'}</span><span className={styles.turn}>{direction && <span aria-hidden="true" className={`${styles.dot} ${direction === 'in' ? styles.incoming : styles.outgoing}`} />}{direction === 'in' ? 'Tocca a te rispondere' : direction === 'out' ? 'Hai risposto, aspetti' : 'Turno non indicato'}</span></div></div><ContactControls id={id} status={contact.status} direction={direction} statuses={CONTACT_STATUSES} /></header>
     <div className={styles.columns}><div className={styles.content}>
       <section className={`${styles.card} ${styles.next}`}><h2>Prossimo passo</h2><p><Value value={contact.next_step} /></p></section>
       <section className={styles.card}><h2>Riassunto dell&apos;interazione</h2><p><Value value={contact.summary} /></p></section>
       <section className={styles.card}><h2>Prototipi mandati</h2>{prototypes.length ? <ul className={styles.prototypes}>{prototypes.map(prototype => { const url = safeUrl(prototype.figma_url); return <li key={prototype.id} className={!prototype.sent_at ? styles.draft : undefined}>{url ? <a href={url} target="_blank" rel="noopener noreferrer">{prototype.title} ↗</a> : <span>{prototype.title}</span>}<small>{prototype.sent_at ? <>Mandato il <DateValue value={prototype.sent_at} /></> : 'Bozza, non ancora mandata'}</small></li> })}</ul> : <p>Non sono ancora stati mandati prototipi.</p>}</section>
       <section className={styles.card}><h2>Proposta offerta</h2><p><Value value={contact.offer} /></p></section>
-    </div><aside className={styles.aside}><h2>Anagrafica</h2><dl><dt>Referente</dt><dd><Value value={contact.contact_person} /></dd><dt>Email</dt><dd><Value value={contact.email} /></dd><dt>Paese e zona di mercato</dt><dd><Value value={contact.location} /></dd><dt>Fuso orario</dt><dd><Value value={contact.timezone} /></dd><dt className={styles.divider}>Ultimo aggiornamento</dt><dd><DateValue value={contact.last_update} /></dd></dl></aside></div>
+    </div><aside className={styles.aside}><h2>Anagrafica</h2><dl><dt>Referente</dt><dd><Value value={contact.contact_person} /></dd><dt>Email</dt><dd>{contact.email?.trim() ? <CopyEmail email={contact.email} /> : <Empty />}</dd><dt>Link</dt><dd>{safeUrl(contact.link) ? <a className={styles.externalLink} href={safeUrl(contact.link)!} target="_blank" rel="noopener noreferrer" aria-label="Apri il sito del contatto in una nuova scheda">{new URL(safeUrl(contact.link)!).hostname}<ExternalLink size={16} aria-hidden="true" /></a> : <span className={styles.missing}>Non indicato</span>}</dd><dt>Paese e zona di mercato</dt><dd><Value value={contact.location} /></dd><dt>Fuso orario</dt><dd><Value value={contact.timezone} /></dd><dt className={styles.divider}>Ultimo aggiornamento</dt><dd><DateValue value={contact.last_update} /></dd></dl></aside></div>
   </div></main>
 }
