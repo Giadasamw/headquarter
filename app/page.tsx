@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 const navigationPages = [
   { href: '/motore/lavagna', label: 'Lavagna contatti' },
+  { href: '/motore/grezzi', label: 'Contatti grezzi' },
   { href: '/motore/prototipi', label: 'Prototipi' },
   { href: '/motore/template', label: 'Template' },
 ]

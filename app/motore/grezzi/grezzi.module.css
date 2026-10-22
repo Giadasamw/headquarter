@@ -1,0 +1,45 @@
+.page { min-height:100vh; padding:40px 24px 80px; background:#f7f5f2; color:#242321; color-scheme:light; font-size:16px; line-height:1.5; --line:#d8d4ce; --muted:#56524d; }
+.container { width:100%; max-width:70vw; margin:0 auto; }
+.back { display:inline-block; font-size:13px; color:var(--muted); margin-bottom:40px; text-decoration:none; }
+.back:hover { text-decoration:underline; }
+.header { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:32px; }
+.headingRow { display:flex; align-items:center; flex-wrap:wrap; gap:16px 24px; }
+.title { font-family:Georgia,Cambria,serif; font-size:40px; font-weight:400; line-height:1.2; letter-spacing:-.02em; margin:0; }
+.count { font-size:13px; color:var(--muted); white-space:nowrap; }
+.subtitle { color:var(--muted); }
+.header p { margin-top:8px; }
+.button { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid #242321; border-radius:9999px; padding:16px 32px; background:transparent; color:inherit; font:inherit; cursor:pointer; white-space:nowrap; transition:background .2s; }
+.button svg { width:20px; height:20px; flex-shrink:0; }
+.button:hover { background:#f6f3f1; }
+.primary { background:#242321; color:#f7f5f2; }
+.primary:hover { background:#56524d; }
+.button:disabled { opacity:.5; cursor:wait; }
+.button:focus-visible,.website:focus-visible,.back:focus-visible,.list button:focus-visible { outline:2px solid #315fd5; outline-offset:4px; }
+.card { border:1px solid var(--line); border-radius:32px; padding:40px; }
+.cardHeader { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; }
+.cardHeader > div { min-width:0; }
+.card h2,.empty h2 { font-family:Georgia,Cambria,serif; font-size:24px; line-height:1.2; font-weight:400; letter-spacing:-.02em; margin:0 0 8px; overflow-wrap:anywhere; }
+.position { font-size:13px; color:var(--muted); white-space:nowrap; padding-top:8px; }
+.website { color:inherit; display:inline-flex; align-items:center; gap:8px; text-decoration:underline; text-underline-offset:4px; overflow-wrap:anywhere; max-width:100%; }
+.website svg { width:16px; height:16px; flex-shrink:0; }
+.facts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:24px 0; }
+.facts > div { border-radius:16px; background:#f6f3f1; padding:16px; overflow-wrap:anywhere; }
+.facts dt,.notes h3 { color:var(--muted); font-size:13px; font-weight:400; margin:0 0 8px; }
+.facts dd { margin:0; }
+.missing { color:#77716a; }
+.notes { border-top:1px solid var(--line); padding-top:24px; margin-bottom:32px; }
+.notes p { white-space:pre-wrap; overflow-wrap:anywhere; color:var(--muted); }
+.actions { display:flex; flex-wrap:wrap; gap:16px; }
+.actions > button:first-child,.actions > button:nth-child(2) { flex:1; }
+.upcoming { display:flex; align-items:baseline; gap:8px; color:var(--muted); font-size:13px; margin-top:16px; }
+.upcoming svg { width:16px; height:16px; flex-shrink:0; align-self:center; }
+.list { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+.list li { border-bottom:1px solid var(--line); }
+.list button { display:flex; align-items:center; justify-content:space-between; text-align:left; gap:24px; padding:20px 16px; width:100%; font:inherit; color:inherit; background:transparent; border:0; cursor:pointer; overflow-wrap:anywhere; }
+.list button:hover { background:#f6f3f1; }
+.empty { padding:64px 24px; text-align:center; border:1px solid var(--line); border-radius:32px; }
+.empty p { color:var(--muted); margin-top:16px; }
+.error { margin-bottom:16px; }
+.srOnly { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media(max-width:800px) { .container { max-width:100%; } .header { align-items:flex-start; flex-wrap:wrap; } .card { padding:24px; } }
+@media(max-width:540px) { .page { padding:24px 16px 64px; } .back { margin-bottom:32px; } .header { gap:16px; } .title { font-size:40px; } .facts { grid-template-columns:1fr; gap:8px; } .actions { flex-direction:column; } .button { padding:16px 24px; } .list button { align-items:flex-start; flex-direction:column; gap:4px; } }
