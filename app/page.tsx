@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 
 const navigationPages = [
+  { href: '/motore/scrivania', label: 'Scrivania' },
   { href: '/motore/lavagna', label: 'Lavagna contatti' },
   { href: '/motore/grezzi', label: 'Contatti grezzi' },
   { href: '/motore/prototipi', label: 'Prototipi' },
