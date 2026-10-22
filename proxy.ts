@@ -20,6 +20,11 @@ function isPublic(pathname: string): boolean {
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
+  // Only the local development preview bypasses the gate, never a Vercel deployment.
+  if (process.env.NODE_ENV === 'development' && !process.env.VERCEL_ENV) {
+    return NextResponse.next()
+  }
+
   if (isPublic(pathname)) return NextResponse.next()
 
   if (await isValidSessionToken(request.cookies.get(SESSION_COOKIE)?.value)) {
