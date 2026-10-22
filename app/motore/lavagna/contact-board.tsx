@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import type { Contact, ContactStatus } from '@/lib/contacts'
 import styles from './lavagna.module.css'
 
@@ -28,7 +29,7 @@ export function ContactBoard({ contacts, statuses, weeklyCount }: { contacts: Bo
     <section aria-label="Elenco contatti">
       <div className={styles.filters}><label className={styles.field}>Stato<select value={status} onChange={event => setStatus(event.target.value)}><option value="">Tutti gli stati</option>{statuses.map(value => <option key={value} value={value}>{value}</option>)}</select></label><label className={`${styles.field} ${styles.search}`}>Cerca azienda<input type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Nome dell’azienda" /></label></div>
       <div className={styles.listMeta}><p aria-live="polite">{filtered.length} {filtered.length === 1 ? 'contatto' : 'contatti'}</p><div className={styles.legend}><span><Direction direction="in" />Tocca a noi</span><span><Direction direction="out" />Aspettiamo risposta</span></div></div>
-      {filtered.length ? <div className={styles.tableWrap}><table className={styles.table}><caption className={styles.srOnly}>Contatti ordinati per ultimo aggiornamento</caption><thead><tr><th scope="col"><span className={styles.srOnly}>Turno di risposta</span></th><th scope="col">Stato</th><th scope="col">Azienda</th><th scope="col">Referente</th><th scope="col">Ultimo aggiornamento</th></tr></thead><tbody>{filtered.map(contact => <tr key={contact.id}><td><Direction direction={contact.last_direction} /></td><td><span className={styles.status}>{contact.status ?? 'Non indicato'}</span></td><th scope="row">{contact.name || 'Azienda non indicata'}</th><td>{contact.contact_person || 'Referente non indicato'}</td><td><UpdatedDate value={contact.last_update} /></td></tr>)}</tbody></table></div> : <div className={styles.empty}><h2>{contacts.length ? 'Nessun contatto trovato' : 'Qui nasceranno nuove relazioni'}</h2><p>{contacts.length ? 'Prova un altro nome o seleziona uno stato diverso.' : 'Non ci sono ancora contatti. Quando arriveranno, li troverai tutti qui.'}</p></div>}
+      {filtered.length ? <div className={styles.tableWrap}><table className={styles.table}><caption className={styles.srOnly}>Contatti ordinati per ultimo aggiornamento</caption><thead><tr><th scope="col"><span className={styles.srOnly}>Turno di risposta</span></th><th scope="col">Stato</th><th scope="col">Azienda</th><th scope="col">Referente</th><th scope="col">Ultimo aggiornamento</th></tr></thead><tbody>{filtered.map(contact => <tr key={contact.id}><td><Direction direction={contact.last_direction} /></td><td><span className={styles.status}>{contact.status ?? 'Non indicato'}</span></td><th scope="row"><Link href={`/motore/lavagna/${contact.id}`}>{contact.name || 'Azienda non indicata'}</Link></th><td>{contact.contact_person || 'Referente non indicato'}</td><td><UpdatedDate value={contact.last_update} /></td></tr>)}</tbody></table></div> : <div className={styles.empty}><h2>{contacts.length ? 'Nessun contatto trovato' : 'Qui nasceranno nuove relazioni'}</h2><p>{contacts.length ? 'Prova un altro nome o seleziona uno stato diverso.' : 'Non ci sono ancora contatti. Quando arriveranno, li troverai tutti qui.'}</p></div>}
     </section>
   </div>
 }

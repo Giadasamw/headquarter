@@ -70,6 +70,10 @@ export async function listContacts(
   return unwrap(await query) as unknown as Contact[]
 }
 
+export async function getContact(id: string): Promise<Contact | null> {
+  return unwrap(await db().from('contacts').select(CONTACT_COLUMNS).eq('id', id).maybeSingle()) as unknown as Contact | null
+}
+
 /** Updates only the fields provided and returns the contact as it is now. */
 export async function updateContact(id: string, changes: ContactChanges): Promise<Contact> {
   const { name, contact_person, ...rest } = changes
