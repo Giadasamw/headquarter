@@ -1,13 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { EveDynamicToolPart } from 'eve/react'
+import { describeApproval } from '@/components/approval-text'
 import { Button } from '@/components/ui/button'
 
 const FALLBACK_OPTIONS = [
-  { id: 'approve', label: 'Approva', style: 'primary' as const },
-  { id: 'deny', label: 'Annulla', style: 'default' as const },
+  { id: 'approve', label: 'Sì, procedi', style: 'primary' as const },
+  { id: 'cancel', label: 'Annulla', style: 'default' as const },
 ]
+
+// eve sends its own buttons in English: show them in Italian.
+const OPTION_LABELS: Record<string, string> = { approve: 'Sì, procedi', cancel: 'Annulla', deny: 'Annulla' }
 
 type Props = {
   part: EveDynamicToolPart
@@ -16,13 +20,32 @@ type Props = {
 
 export function ApprovalCard({ part, onRespond }: Props) {
   const [sending, setSending] = useState(false)
+  // undefined while loading, null when the call can't be described in a sentence.
+  const [sentence, setSentence] = useState<string | null | undefined>(undefined)
   const request = part.toolMetadata?.eve?.inputRequest
   const requestId = request?.requestId ?? part.approval?.id
   const options = request?.options?.length ? request.options : FALLBACK_OPTIONS
   const label = part.toolMetadata?.eve?.label ?? part.toolName
 
+  // A string key, so a re-render with an equal input doesn't ask the server again.
+  const inputKey = JSON.stringify(part.input ?? null)
+
+  useEffect(() => {
+    let current = true
+    describeApproval(part.toolName, JSON.parse(inputKey))
+      .catch(() => null)
+      .then((text) => {
+        if (current) setSentence(text)
+      })
+    return () => {
+      current = false
+    }
+  }, [part.toolName, inputKey])
+
+  const description = sentence ?? `Posso eseguire: ${label}?`
+
   if (part.state === 'output-denied') {
-    return <p className="self-start text-xs text-muted-foreground">{`Annullato: ${label}`}</p>
+    return <p className="self-start text-xs text-muted-foreground">{`Annullato: ${sentence ?? label}`}</p>
   }
   if (part.state !== 'approval-requested' || !requestId) return null
 
@@ -39,23 +62,20 @@ export function ApprovalCard({ part, onRespond }: Props) {
   return (
     <div
       role="group"
-      aria-label="Richiesta di approvazione"
+      aria-label="Richiesta di conferma"
       className="self-start flex max-w-[85%] flex-col gap-3 rounded-2xl border border-border bg-background px-4 py-3 text-sm"
     >
-      <p className="font-medium">{request?.prompt ?? `Posso eseguire: ${label}?`}</p>
-      <pre className="overflow-x-auto rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
-        {JSON.stringify(part.input, null, 2)}
-      </pre>
+      <p className="font-medium">{sentence === undefined ? 'Preparo la richiesta…' : description}</p>
       <div className="flex gap-2">
         {options.map((option) => (
           <Button
             key={option.id}
             size="sm"
             variant={option.style === 'primary' ? 'default' : option.style === 'danger' ? 'destructive' : 'outline'}
-            disabled={sending}
+            disabled={sending || sentence === undefined}
             onClick={() => choose(option.id)}
           >
-            {option.label}
+            {OPTION_LABELS[option.id] ?? option.label}
           </Button>
         ))}
       </div>

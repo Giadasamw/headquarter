@@ -1,12 +1,13 @@
 import { defineTool } from "eve/tools";
 import { z } from "zod";
+import { CONTACT_STATUSES } from "../lib/contact-fields";
 import { db, unwrap } from "../lib/db";
 
 export default defineTool({
   description: "List contacts, optionally filtered by room or status.",
   inputSchema: z.object({
     room_id: z.string().uuid().optional(),
-    status: z.string().optional(),
+    status: z.enum(CONTACT_STATUSES).optional(),
   }),
   async execute({ room_id, status }) {
     let query = db().from("contacts").select("*").order("follow_up_date", { ascending: true, nullsFirst: false });

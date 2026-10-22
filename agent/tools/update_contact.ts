@@ -3,8 +3,10 @@ import { z } from "zod";
 import { contactFields } from "../lib/contact-fields";
 import { db, unwrap } from "../lib/db";
 
+// There is deliberately no tool that deletes a contact.
 export default defineTool({
-  description: "Update fields of an existing contact. Only the fields provided are changed.",
+  description:
+    "Update fields of an existing contact (company, person, email, location, timezone, offer, summary, next_step, last_update, last_direction, status, type and the others). Only the fields provided are changed. Contacts are never deleted.",
   inputSchema: z.object({
     contact_id: z.string().uuid(),
     room_id: z.string().uuid().optional(),
