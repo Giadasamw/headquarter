@@ -1,0 +1,58 @@
+.page {
+  --canvas: #f7f5f2;
+  --ink: #242321;
+  --muted: #56524d;
+  --line: #d8d4ce;
+  --focus: #315fd5;
+  --orange: #f37a0a;
+  --mint: #a7fccd;
+  min-height: 100vh;
+  background: var(--canvas);
+  color: var(--ink);
+  color-scheme: light;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 64px 24px 80px;
+}
+.container { width: 100%; max-width: 70vw; margin: 0 auto; }
+.header { margin-bottom: 40px; }
+.eyebrow { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+.headingRow { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.title { font-family: Georgia, Cambria, 'Times New Roman', serif; font-size: 48px; line-height: 1.2; letter-spacing: -.02em; font-weight: 400; margin: 0 0 16px; }
+.subtitle { color: var(--muted); }
+.readOnly { border: 1px solid var(--line); border-radius: 9999px; padding: 8px 16px; white-space: nowrap; font-size: 13px; }
+.weekly { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 24px; padding: 32px 40px; border: 1px solid var(--line); border-radius: 32px; margin-bottom: 40px; }
+.weekly h2 { font-family: Georgia, Cambria, 'Times New Roman', serif; font-size: 24px; font-weight: 400; line-height: 1.2; letter-spacing: -.02em; margin-bottom: 8px; }
+.weekly p { color: var(--muted); font-size: 13px; }
+.weeklyValue { font-size: 16px; }
+.weeklyValue span { color: var(--muted); }
+.weeklyNote { flex-basis: 100%; }
+.filters { display: flex; gap: 16px; margin-bottom: 32px; }
+.field { display: flex; flex-direction: column; gap: 8px; font-size: 13px; min-width: 200px; }
+.search { flex: 1; }
+.field input, .field select { width: 100%; border: 1px solid var(--line); border-radius: 9999px; background: var(--canvas); color: var(--ink); padding: 16px 24px; font-family: inherit; font-size: 16px; }
+.field input::placeholder { color: var(--muted); opacity: 1; }
+.field input:focus-visible, .field select:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.listMeta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; align-items: center; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.legend { display: flex; flex-wrap: wrap; gap: 24px; }
+.legend > span { display: inline-flex; gap: 8px; align-items: center; }
+.direction { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.incoming { background: var(--orange); }
+.outgoing { border: 2px solid var(--mint); outline: 1px solid var(--muted); outline-offset: 0; }
+.unknown { border: 1px solid var(--line); }
+.tableWrap { overflow-x: auto; }
+.table { width: 100%; text-align: left; border-collapse: collapse; font-size: 13px; }
+.table thead { color: var(--muted); }
+.table th { font-weight: 400; }
+.table th, .table td { padding: 24px 16px; border-bottom: 1px solid var(--line); }
+.table th:first-child, .table td:first-child { padding-left: 8px; width: 32px; }
+.table tbody th { font-size: 16px; min-width: 160px; }
+.table td:last-child { white-space: nowrap; color: var(--muted); }
+.status { border: 1px solid var(--line); padding: 8px 16px; display: inline-block; border-radius: 9999px; white-space: nowrap; }
+.empty { border-top: 1px solid var(--line); padding: 64px 24px; text-align: center; }
+.empty h2 { font-family: Georgia, Cambria, 'Times New Roman', serif; font-size: 24px; font-weight: 400; letter-spacing: -.02em; margin-bottom: 16px; }
+.empty p { color: var(--muted); }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (max-width: 900px) { .container { max-width: 100%; } }
+@media (max-width: 600px) { .page { padding: 32px 16px 64px; } .title { font-size: 40px; } .headingRow { align-items: flex-start; flex-direction: column; gap: 8px; } .weekly { padding: 24px; } .filters { flex-direction: column; } .field { min-width: 0; } .legend { gap: 16px; } }
