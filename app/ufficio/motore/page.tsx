@@ -26,7 +26,7 @@ export default async function MotoreZoomPage({ searchParams }: PageProps<'/uffic
 
       {/* Pulsante in alto a sinistra per tornare alla mappa */}
       <Link
-        href={debug === '1' ? '/ufficio?debug=1' : '/ufficio'}
+        href={debug === '1' ? '/?debug=1' : '/'}
         className="fixed top-4 left-4 z-10 rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-stone-800 shadow-md transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-800"
       >
         ← Torna alla mappa

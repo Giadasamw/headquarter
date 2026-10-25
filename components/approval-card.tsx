@@ -45,7 +45,7 @@ export function ApprovalCard({ part, onRespond }: Props) {
   const description = sentence ?? `Posso eseguire: ${label}?`
 
   if (part.state === 'output-denied') {
-    return <p className="self-start text-xs text-muted-foreground">{`Annullato: ${sentence ?? label}`}</p>
+    return <p className="self-start text-[13px] text-muted-foreground">{`Annullato: ${sentence ?? label}`}</p>
   }
   if (part.state !== 'approval-requested' || !requestId) return null
 
@@ -63,14 +63,15 @@ export function ApprovalCard({ part, onRespond }: Props) {
     <div
       role="group"
       aria-label="Richiesta di conferma"
-      className="self-start flex max-w-[85%] flex-col gap-3 rounded-2xl border border-border bg-background px-4 py-3 text-sm"
+      className="self-start flex max-w-[85%] flex-col gap-4 rounded-(--raggio-lg) border border-border bg-background px-6 py-4"
     >
       <p className="font-medium">{sentence === undefined ? 'Preparo la richiesta…' : description}</p>
       <div className="flex gap-2">
         {options.map((option) => (
           <Button
             key={option.id}
-            size="sm"
+            size="lg"
+            className="rounded-full px-4"
             variant={option.style === 'primary' ? 'default' : option.style === 'danger' ? 'destructive' : 'outline'}
             disabled={sending || sentence === undefined}
             onClick={() => choose(option.id)}

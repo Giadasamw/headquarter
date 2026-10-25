@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Zona } from '@/app/ufficio/zone'
+import { ApriSophie } from '@/components/sophie'
 
 // Colore caldo neutro usato come sfondo attorno alle immagini dell'ufficio.
 // Cambialo qui per modificarlo su tutte e due le pagine.
@@ -73,7 +74,13 @@ export function MappaCliccabile({ immagine, descrizione, larghezzaOriginale, alt
                   La zona copre tutta l'immagine ma viene ritagliata con clip-path:
                   il clic e il passaggio del mouse funzionano solo dentro la forma.
                 */}
-                {zona.link ? (
+                {zona.apre === 'sophie' ? (
+                  <ApriSophie
+                    aria-label={zona.nome}
+                    className={`${STILE_ZONA} ${STILE_CLICCABILE} pointer-events-auto inset-0`}
+                    style={stile}
+                  />
+                ) : zona.link ? (
                   <Link
                     href={zona.link}
                     aria-label={zona.nome}
@@ -89,7 +96,7 @@ export function MappaCliccabile({ immagine, descrizione, larghezzaOriginale, alt
                     style={{ left: `${centro.x}%`, top: `${centro.y}%` }}
                   >
                     {zona.nome}
-                    {!zona.link && ' (senza link)'}
+                    {!zona.link && !zona.apre && ' (senza link)'}
                   </span>
                 )}
               </div>
@@ -107,6 +114,18 @@ export function MappaCliccabile({ immagine, descrizione, larghezzaOriginale, alt
           const etichetta = debug && (
             <span className="rounded bg-black/70 px-2 py-1 text-sm font-medium text-white">{zona.nome}</span>
           )
+          if (zona.apre === 'sophie') {
+            return (
+              <ApriSophie
+                key={zona.nome}
+                aria-label={zona.nome}
+                className={`${STILE_ZONA} ${STILE_CLICCABILE} rounded-lg hover:shadow-[0_0_40px_12px_rgba(255,255,255,0.55)]`}
+                style={stile}
+              >
+                {etichetta}
+              </ApriSophie>
+            )
+          }
           return zona.link ? (
             <Link
               key={zona.nome}

@@ -2,7 +2,7 @@
 // ZONE CLICCABILI DELL'UFFICIO
 // ----------------------------------------------------------------------------
 // Qui stanno TUTTE le percentuali delle zone cliccabili, sia della mappa
-// (/ufficio) sia dello zoom della stanza Motore (/ufficio/motore).
+// (la homepage "/") sia dello zoom della stanza Motore (/ufficio/motore).
 //
 // Ci sono due tipi di zona, entrambi in PERCENTUALE rispetto all'immagine.
 //
@@ -21,14 +21,16 @@
 //   clip-path: polygon(...). Puoi aggiungere o togliere vertici.
 //
 // Se "link" manca, la zona non porta da nessuna parte (e non è cliccabile).
+// Con apre: 'sophie' la zona non cambia pagina: apre il pannello della chat di Sophie.
 //
 // Suggerimento: apri la pagina con ?debug=1 alla fine dell'indirizzo
-// (es. /ufficio?debug=1) per vedere i rettangoli colorati mentre ritocchi i numeri.
+// (es. /?debug=1) per vedere i rettangoli colorati mentre ritocchi i numeri.
 // ============================================================================
 
 export type Zona = {
   nome: string // testo mostrato in modalità debug (e letto dagli screen reader)
   link?: string // pagina in cui si va cliccando la zona (facoltativo)
+  apre?: 'sophie' // invece di un link: apre il pannello della chat di Sophie
   colore: string // colore della zona in modalità debug
   // Per un RETTANGOLO:
   sinistra?: number // in %
@@ -53,6 +55,16 @@ export const zoneMappa: Zona[] = [
     altezza: 28, // ...fino al 40% dell'altezza (40 - 12)
     colore: 'rgba(255, 64, 129, 0.35)',
   },
+  {
+    // Caffetteria, in basso al centro: il bancone con Sophie (la barista)
+    nome: 'Sophie',
+    apre: 'sophie',
+    sinistra: 41, // dal 41%...
+    alto: 58, // dal 58%...
+    larghezza: 19, // ...fino al 60% della larghezza (60 - 41)
+    altezza: 22, // ...fino all'80% dell'altezza (80 - 58)
+    colore: 'rgba(156, 39, 176, 0.35)',
+  },
 
   // Zone future: per attivarle togli le due barre // davanti a ogni riga,
   // poi sistema numeri e link. Ricorda la virgola tra una zona e l'altra.
@@ -60,7 +72,6 @@ export const zoneMappa: Zona[] = [
   // { nome: 'Stanza in alto a destra', link: '/ufficio/...', sinistra: 0, alto: 0, larghezza: 0, altezza: 0, colore: 'rgba(33, 150, 243, 0.35)' },
   // { nome: 'Stanza in basso a sinistra', link: '/ufficio/...', sinistra: 0, alto: 0, larghezza: 0, altezza: 0, colore: 'rgba(76, 175, 80, 0.35)' },
   // { nome: 'Stanza in basso a destra', link: '/ufficio/...', sinistra: 0, alto: 0, larghezza: 0, altezza: 0, colore: 'rgba(255, 152, 0, 0.35)' },
-  // { nome: 'Caffetteria', link: '/ufficio/...', sinistra: 0, alto: 0, larghezza: 0, altezza: 0, colore: 'rgba(156, 39, 176, 0.35)' },
 ]
 
 // ---------------------------------------------------------------------------

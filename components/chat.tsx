@@ -1,11 +1,13 @@
 'use client'
 
-import { Fragment, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react'
+import { Fragment, useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react'
 import { useEveAgent } from 'eve/react'
 import { ArrowUp } from 'lucide-react'
 import { ApprovalCard } from '@/components/approval-card'
+import { TestoFormattato } from '@/components/testo-formattato'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import styles from './sophie.module.css'
 
 export function Chat({ briefing }: { briefing?: ReactNode }) {
   const agent = useEveAgent()
@@ -13,6 +15,18 @@ export function Chat({ briefing }: { briefing?: ReactNode }) {
   const isBusy = agent.status === 'submitted' || agent.status === 'streaming'
   const isResuming = agent.status === 'resuming'
   const messages = agent.data.messages
+  const bottom = useRef<HTMLDivElement>(null)
+
+  // "Sophie sta scrivendo…" stays until the first words of her reply arrive.
+  const last = messages[messages.length - 1]
+  const replyStarted =
+    last?.role === 'assistant' && last.parts.some((part) => part.type === 'text' && part.text.trim() !== '')
+  const isTyping = agent.status === 'submitted' || (agent.status === 'streaming' && !replyStarted)
+
+  // Keep the newest message in view.
+  useEffect(() => {
+    bottom.current?.scrollIntoView({ block: 'end' })
+  }, [messages, isTyping])
 
   function submit() {
     const text = input.trim()
@@ -35,19 +49,15 @@ export function Chat({ briefing }: { briefing?: ReactNode }) {
   }
 
   return (
-    <div className="mx-auto flex h-dvh w-full max-w-2xl flex-col px-4">
-      <header className="border-b border-border py-5">
-        <h1 className="text-base font-medium">Assistente di Giada</h1>
-        <p className="text-sm text-muted-foreground">Agente eve · prova</p>
-        {briefing}
-      </header>
-
+    <div className="flex min-h-0 w-full flex-1 flex-col px-6">
       <section
         aria-live="polite"
-        className="flex flex-1 flex-col gap-4 overflow-y-auto py-6"
+        className="flex flex-1 flex-col gap-4 overflow-y-auto pt-2 pb-6"
       >
+        {briefing}
+
         {messages.length === 0 ? (
-          <p className="m-auto text-center text-sm text-muted-foreground text-balance">
+          <p className="m-auto text-center text-muted-foreground text-balance">
             {'Scrivi "Dammi il briefing" per iniziare.'}
           </p>
         ) : (
@@ -68,14 +78,14 @@ export function Chat({ briefing }: { briefing?: ReactNode }) {
               <article
                 key={message.id}
                 className={cn(
-                  'max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
+                  'max-w-[85%] rounded-(--raggio-md) px-4 py-2.5',
                   isUser
-                    ? 'self-end bg-primary text-primary-foreground'
-                    : 'self-start bg-muted text-foreground',
+                    ? 'self-end whitespace-pre-wrap bg-primary text-primary-foreground'
+                    : 'self-start border border-border text-foreground',
                 )}
               >
-                <span className="sr-only">{isUser ? 'Tu: ' : 'Assistente: '}</span>
-                {text}
+                <span className="sr-only">{isUser ? 'Tu: ' : 'Sophie: '}</span>
+                {isUser ? text : <TestoFormattato testo={text} />}
               </article>
                 )}
                 {approvals.map((part) =>
@@ -91,19 +101,27 @@ export function Chat({ briefing }: { briefing?: ReactNode }) {
             )
           })
         )}
-        {agent.status === 'submitted' && (
-          <p className="self-start text-sm text-muted-foreground">Sto pensando…</p>
+        {isTyping && (
+          <p className="self-start rounded-(--raggio-md) border border-border px-4 py-2.5 text-muted-foreground">
+            Sophie sta scrivendo…
+            <span aria-hidden className={styles.puntini}>
+              <span />
+              <span />
+              <span />
+            </span>
+          </p>
         )}
         {agent.error && (
-          <p role="alert" className="self-start text-sm text-destructive">
+          <p role="alert" className="self-start text-destructive">
             Qualcosa non ha funzionato. Riprova.
           </p>
         )}
+        <div ref={bottom} />
       </section>
 
       <form
         onSubmit={handleSubmit}
-        className="mb-4 flex items-end gap-2 rounded-2xl border border-border bg-background p-2"
+        className="mb-6 flex items-end gap-2 rounded-(--raggio-lg) border border-border bg-background p-2"
       >
         <label htmlFor="message" className="sr-only">
           Messaggio
@@ -115,14 +133,15 @@ export function Chat({ briefing }: { briefing?: ReactNode }) {
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={handleKeyDown}
           disabled={isResuming}
-          placeholder="Scrivi un messaggio…"
-          className="max-h-40 min-h-9 flex-1 resize-none bg-transparent px-2 py-2 text-sm outline-none placeholder:text-muted-foreground"
+          placeholder="Scrivi a Sophie…"
+          className="max-h-40 min-h-10 flex-1 resize-none bg-transparent px-3 py-2 outline-none placeholder:text-muted-foreground"
         />
         <Button
           type="submit"
-          size="icon"
+          size="icon-lg"
           disabled={!input.trim() || isResuming}
           aria-label="Invia"
+          className="rounded-full"
         >
           <ArrowUp aria-hidden="true" />
         </Button>
