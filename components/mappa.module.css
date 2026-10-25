@@ -1,0 +1,63 @@
+/*
+  Cartellini con il nome delle stanze sulla mappa.
+  Colori, forma, ombre e movimento dal design system
+  ("design_system_redesign_portfolio_v2 (2).md").
+*/
+.mappa {
+  /* Le misure "cqw" dei cartellini sono in proporzione alla larghezza della mappa */
+  container-type: inline-size;
+  --ink-warm: #242321;
+  --parchment: #f7f5f2;
+  --coral: #ff9473;
+  --sky-blue: #a0b5eb;
+  --focus-blue: #315fd5;
+  --curva: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Contiene la zona e il suo cartellino: non riceve clic, li lascia passare */
+.stanza {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cartellino {
+  position: absolute;
+  z-index: 10; /* sempre sopra le zone */
+  translate: -50% -50%;
+  pointer-events: auto;
+  padding: 0.35em 0.9em;
+  border-radius: 9999px; /* pillola, come bottoni e tag del design system */
+  background: var(--ink-warm);
+  color: var(--parchment);
+  font-size: clamp(10px, 1.1cqw, 18px);
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: default;
+  user-select: none;
+  box-shadow:
+    0 8px 18px -12px color-mix(in srgb, var(--coral) 72%, transparent),
+    0 5px 14px -12px color-mix(in srgb, var(--sky-blue) 76%, transparent);
+  transition:
+    transform 300ms var(--curva),
+    box-shadow 300ms var(--curva);
+}
+a.cartellino {
+  cursor: pointer;
+}
+
+/* Passando sopra la stanza (o sul cartellino) il cartellino si solleva un poco */
+.stanza:hover .cartellino,
+.stanza:has(:focus-visible) .cartellino {
+  transform: translateY(-2px);
+  box-shadow:
+    -8px 10px 22px -12px color-mix(in srgb, var(--coral) 88%, transparent),
+    8px 10px 22px -12px color-mix(in srgb, var(--sky-blue) 90%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cartellino {
+    transition: none;
+  }
+}
