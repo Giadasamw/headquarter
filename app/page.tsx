@@ -1,35 +1,25 @@
-import { Suspense } from 'react'
-import Link from 'next/link'
+import type { Metadata } from 'next'
+import { MappaCliccabile } from '@/components/mappa-cliccabile'
+import { zoneMappa } from './ufficio/zone'
 
-const navigationPages = [
-  { href: '/motore/scrivania', label: 'Scrivania' },
-  { href: '/motore/lavagna', label: 'Lavagna contatti' },
-  { href: '/motore/grezzi', label: 'Contatti grezzi' },
-  { href: '/motore/prototipi', label: 'Prototipi' },
-  { href: '/motore/template', label: 'Template' },
-]
-import { Chat } from '@/components/chat'
-import { LatestBriefing } from '@/components/latest-briefing'
+export const metadata: Metadata = {
+  title: 'Ufficio | Quartier generale',
+  robots: { index: false, follow: false },
+}
 
-export default function Page() {
+// Homepage "/": la mappa dell'intero piano.
+// Aggiungi ?debug=1 all'indirizzo per vedere le zone cliccabili.
+export default async function Page({ searchParams }: PageProps<'/'>) {
+  const { debug } = await searchParams
+
   return (
-    <main>
-      <Chat
-        briefing={
-          <>
-            <nav aria-label="Pagine del quartier generale" className="mt-4 flex flex-wrap gap-2">
-              {navigationPages.map(page => (
-                <Link key={page.href} href={page.href} className="rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
-                  {page.label}
-                </Link>
-              ))}
-            </nav>
-            <Suspense fallback={null}>
-              <LatestBriefing />
-            </Suspense>
-          </>
-        }
-      />
-    </main>
+    <MappaCliccabile
+      immagine="/ufficio.png.png"
+      descrizione="Mappa dell'intero piano dell'ufficio"
+      larghezzaOriginale={1536}
+      altezzaOriginale={1024}
+      zone={zoneMappa}
+      debug={debug === '1'}
+    />
   )
 }

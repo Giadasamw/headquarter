@@ -1,0 +1,254 @@
+/*
+  Chat di Sophie: bollino + pannello laterale.
+  Tutti i valori vengono dal design system ("design_system_redesign_portfolio_v2 (2).md").
+  Qui dentro i colori di base del sito (shadcn) vengono sostituiti con quelli
+  del design system, così anche la chat e la scheda di conferma li usano.
+*/
+.tema {
+  color-scheme: light;
+  --background: #f7f5f2; /* Parchment */
+  --foreground: #242321; /* Ink Warm */
+  --card: #f7f5f2;
+  --card-foreground: #242321;
+  --popover: #f7f5f2;
+  --popover-foreground: #242321;
+  --primary: #242321;
+  --primary-foreground: #f7f5f2;
+  --secondary: #a0b5eb; /* Sky Blue */
+  --secondary-foreground: #242321;
+  --muted: #d8d4ce; /* Ash Warm */
+  --muted-foreground: #56524d; /* Graphite Warm */
+  --accent: #ff9473; /* Coral */
+  --accent-foreground: #242321;
+  --border: #d8d4ce;
+  --input: #d8d4ce;
+  --ring: #315fd5; /* Focus Blue */
+  --radius: 1.5rem;
+  --parchment-deep: #f6f3f1;
+  --raggio-sm: 0.75rem; /* 12px */
+  --raggio-md: 1rem; /* 16px */
+  --raggio-lg: 1.5rem; /* 24px */
+  --raggio-card: 2rem; /* 32px */
+  --curva: cubic-bezier(0.22, 1, 0.36, 1);
+  color: var(--foreground);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ---- Bollino in basso a destra (Primary Pill Button + Gradient Shadow Button) ---- */
+.bollino {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  cursor: pointer;
+  box-shadow:
+    0 8px 18px -12px color-mix(in srgb, var(--accent) 72%, transparent),
+    0 5px 14px -12px color-mix(in srgb, var(--secondary) 76%, transparent);
+  transition:
+    transform 300ms var(--curva),
+    box-shadow 300ms var(--curva),
+    opacity 300ms ease;
+}
+.bollino:hover,
+.bollino:focus-visible {
+  transform: translateY(-2px);
+  box-shadow:
+    -8px 10px 22px -12px color-mix(in srgb, var(--accent) 88%, transparent),
+    8px 10px 22px -12px color-mix(in srgb, var(--secondary) 90%, transparent);
+}
+.bollino:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+.bollino[data-nascosto] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Velo dietro al pannello ---- */
+.velo {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: color-mix(in srgb, var(--foreground) 24%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms var(--curva);
+}
+.velo[data-aperto] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---- Pannello laterale ---- */
+.pannello {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* schermo piccolo: tutta la larghezza */
+  background: var(--background);
+  box-shadow: 0 18px 36px -28px color-mix(in srgb, var(--foreground) 42%, transparent);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition:
+    transform 500ms var(--curva),
+    visibility 0s linear 500ms;
+}
+.pannello[data-aperto] {
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform 500ms var(--curva),
+    visibility 0s;
+}
+@media (min-width: 768px) {
+  .pannello {
+    width: 480px;
+    border-left: 1px solid var(--border);
+    border-radius: 2rem 0 0 2rem; /* 32px, il raggio delle card */
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pannello,
+  .pannello[data-aperto],
+  .velo,
+  .bollino {
+    transition: none;
+  }
+}
+
+.testata {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 24px 0;
+}
+.titolo {
+  margin: 0;
+  font-family: 'Untitled Serif', Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.sottotitolo {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.2;
+  color: var(--muted-foreground);
+}
+.chiudi {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background-color 300ms var(--curva);
+}
+.chiudi:hover {
+  background: var(--parchment-deep);
+}
+.chiudi:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ---- "Sophie sta scrivendo…" ---- */
+.puntini {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.puntini span {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--muted-foreground);
+  animation: salto 1.2s var(--curva) infinite;
+}
+.puntini span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.puntini span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes salto {
+  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .puntini span { animation: none; }
+}
+
+/* ---- Testo formattato (grassetto, elenchi, titoletti…) ---- */
+.formattato > :first-child { margin-top: 0; }
+.formattato > :last-child { margin-bottom: 0; }
+.formattato p,
+.formattato ul,
+.formattato ol { margin: 0 0 8px; }
+.formattato ul,
+.formattato ol { padding-left: 24px; }
+.formattato ul { list-style: disc; }
+.formattato ol { list-style: decimal; }
+.formattato li + li { margin-top: 4px; }
+.formattato li > ul,
+.formattato li > ol { margin: 4px 0 0; }
+.formattato strong { font-weight: 500; }
+.formattato em { font-style: italic; }
+.formattato h1,
+.formattato h2,
+.formattato h3,
+.formattato h4 {
+  margin: 16px 0 8px;
+  font-family: 'Untitled Serif', Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.formattato h1,
+.formattato h2 { font-size: 24px; }
+.formattato h3,
+.formattato h4 { font-size: 16px; }
+.formattato hr {
+  margin: 16px 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+.formattato a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.formattato code {
+  font-family: inherit;
+  padding: 0 4px;
+  border-radius: 0.75rem;
+  background: var(--parchment-deep);
+}
+.formattato blockquote {
+  margin: 0 0 8px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+  color: var(--muted-foreground);
+}
