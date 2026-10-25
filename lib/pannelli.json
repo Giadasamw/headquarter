@@ -1,0 +1,27 @@
+[
+  {
+    "stanza": "Motore",
+    "pannelli": [
+      {
+        "nome": "Contatti grezzi",
+        "link": "/motore/grezzi"
+      },
+      {
+        "nome": "Lavagna contatti",
+        "link": "/motore/lavagna"
+      },
+      {
+        "nome": "Prototipi",
+        "link": "/motore/prototipi"
+      },
+      {
+        "nome": "Scrivania",
+        "link": "/motore/scrivania"
+      },
+      {
+        "nome": "Template",
+        "link": "/motore/template"
+      }
+    ]
+  }
+]

@@ -2,8 +2,9 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
-import { MessageCircle, X } from 'lucide-react'
+import { Menu, MessageCircle, X } from 'lucide-react'
 import { Chat } from '@/components/chat'
+import { SophieMenu } from '@/components/sophie-menu'
 import styles from './sophie.module.css'
 
 // Pagine in cui Sophie non compare (prima di entrare con la password)
@@ -65,19 +66,27 @@ function Bollino() {
 function Pannello({ briefing }: { briefing: ReactNode }) {
   const { aperto, chiudi } = useSophie()
   const tastoChiudi = useRef<HTMLButtonElement>(null)
+  const [menuAperto, setMenuAperto] = useState(false)
 
-  // Il tasto Esc chiude il pannello. Viene ascoltato "per primo" (capture) e
-  // fermato lì, così se sotto c'è un pannello del Motore si chiude solo la chat.
+  // Il tasto Esc chiude prima la lista di navigazione (se è aperta), poi il pannello.
+  // Viene ascoltato "per primo" (capture) e fermato lì, così se sotto c'è un
+  // pannello del Motore si chiude solo la chat.
   useEffect(() => {
     if (!aperto) return
     const suTasto = (evento: KeyboardEvent) => {
       if (evento.key !== 'Escape') return
       evento.stopImmediatePropagation()
-      chiudi()
+      if (menuAperto) setMenuAperto(false)
+      else chiudi()
     }
     window.addEventListener('keydown', suTasto, { capture: true })
     return () => window.removeEventListener('keydown', suTasto, { capture: true })
-  }, [aperto, chiudi])
+  }, [aperto, menuAperto, chiudi])
+
+  // Chiudendo la chat si chiude anche la lista
+  useEffect(() => {
+    if (!aperto) setMenuAperto(false)
+  }, [aperto])
 
   // All'apertura il cursore della tastiera va sulla X
   useEffect(() => {
@@ -99,7 +108,18 @@ function Pannello({ briefing }: { briefing: ReactNode }) {
         data-aperto={aperto || undefined}
       >
         <div className={styles.testata}>
-          <div>
+          {/* Burger: apre la lista delle pagine. Quando la lista è aperta diventa una X */}
+          <button
+            type="button"
+            onClick={() => setMenuAperto((prima) => !prima)}
+            aria-label={menuAperto ? 'Chiudi il menu' : 'Apri il menu'}
+            aria-expanded={menuAperto}
+            aria-controls="sophie-menu"
+            className={styles.chiudi}
+          >
+            {menuAperto ? <X aria-hidden size={20} /> : <Menu aria-hidden size={20} />}
+          </button>
+          <div className={styles.intestazione}>
             <h2 className={styles.titolo}>Sophie</h2>
             <p className={styles.sottotitolo}>La tua assistente</p>
           </div>
@@ -107,7 +127,13 @@ function Pannello({ briefing }: { briefing: ReactNode }) {
             <X aria-hidden size={20} />
           </button>
         </div>
-        <Chat briefing={briefing} />
+        {/* La conversazione resta sempre lì sotto: la lista la copre soltanto */}
+        <div className={styles.corpo}>
+          <div inert={menuAperto} className={styles.conversazione}>
+            <Chat briefing={briefing} />
+          </div>
+          {menuAperto && <SophieMenu onScelta={() => setMenuAperto(false)} />}
+        </div>
       </aside>
     </>
   )
