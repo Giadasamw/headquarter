@@ -252,3 +252,79 @@
   border-left: 1px solid var(--border);
   color: var(--muted-foreground);
 }
+
+/* ---- Burger menu e lista di navigazione ---- */
+.intestazione {
+  flex: 1;
+  min-width: 0;
+}
+.corpo {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.conversazione {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.menu {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  padding: 16px 24px 24px;
+  background: var(--background);
+}
+.stanza {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nomeStanza {
+  margin: 0;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--muted-foreground);
+}
+.listaPannelli {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.voce {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: background-color 300ms var(--curva), border-color 300ms var(--curva);
+}
+.voce:hover {
+  background: var(--parchment-deep);
+  border-color: var(--border);
+}
+.voce:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+/* La pagina in cui ti trovi */
+.voce[aria-current='page'] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
