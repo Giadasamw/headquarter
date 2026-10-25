@@ -23,6 +23,11 @@
 // Se "link" manca, la zona non porta da nessuna parte (e non è cliccabile).
 // Con apre: 'sophie' la zona non cambia pagina: apre il pannello della chat di Sophie.
 //
+// CARTELLINO (facoltativo): il nome della stanza scritto sopra la mappa.
+//   cartellino: { sinistra: 38, alto: 34 } → il CENTRO del cartellino sta al
+//   38% della larghezza e al 34% dell'altezza dell'immagine.
+//   Il testo del cartellino NON sta qui: sta in testi/mappa.json, sotto il "nome" della zona.
+//
 // Suggerimento: apri la pagina con ?debug=1 alla fine dell'indirizzo
 // (es. /?debug=1) per vedere i rettangoli colorati mentre ritocchi i numeri.
 // ============================================================================
@@ -39,6 +44,8 @@ export type Zona = {
   altezza?: number // in %
   // Per un POLIGONO:
   forma?: string // vertici del clip-path, es. '10% 20%, 30% 20%, 20% 40%'
+  // Cartellino con il nome della stanza (posizione del suo centro, in %):
+  cartellino?: { sinistra: number; alto: number }
 }
 
 // ---------------------------------------------------------------------------
@@ -54,6 +61,40 @@ export const zoneMappa: Zona[] = [
     larghezza: 27, // ...fino al 45% della larghezza (45 - 18)
     altezza: 28, // ...fino al 40% dell'altezza (40 - 12)
     colore: 'rgba(255, 64, 129, 0.35)',
+    cartellino: { sinistra: 38, alto: 34.5 }, // sulla targhetta di legno all'ingresso
+  },
+  {
+    // Stanza in alto a destra, con la grande libreria e la bacheca di sughero.
+    // Ancora senza pagina: non è cliccabile. Quando ci sarà, aggiungi il link.
+    nome: 'Laboratorio',
+    sinistra: 55, // dal 55%...
+    alto: 8, // dall'8%...
+    larghezza: 33, // ...fino all'88% della larghezza (88 - 55)
+    altezza: 32, // ...fino al 40% dell'altezza (40 - 8)
+    colore: 'rgba(33, 150, 243, 0.35)',
+    cartellino: { sinistra: 62, alto: 35 }, // sulla targhetta di legno all'ingresso
+  },
+  {
+    // Stanza in basso a sinistra, con la stampante e la bacheca a quadretti.
+    // Ancora senza pagina: non è cliccabile. Quando ci sarà, aggiungi il link.
+    nome: 'Pinterest',
+    sinistra: 9, // dal 9%...
+    alto: 42, // dal 42%...
+    larghezza: 31, // ...fino al 40% della larghezza (40 - 9)
+    altezza: 32, // ...fino al 74% dell'altezza (74 - 42)
+    colore: 'rgba(76, 175, 80, 0.35)',
+    cartellino: { sinistra: 33.5, alto: 51 }, // sulla targhetta di legno all'ingresso
+  },
+  {
+    // Stanza in basso a destra, con il computer e i quadri verdi.
+    // Ancora senza pagina: non è cliccabile. Quando ci sarà, aggiungi il link.
+    nome: 'Operatività',
+    sinistra: 61, // dal 61%...
+    alto: 46, // dal 46%...
+    larghezza: 31, // ...fino al 92% della larghezza (92 - 61)
+    altezza: 34, // ...fino all'80% dell'altezza (80 - 46)
+    colore: 'rgba(255, 152, 0, 0.35)',
+    cartellino: { sinistra: 66.5, alto: 55 }, // sulla targhetta di legno all'ingresso
   },
   {
     // Caffetteria, in basso al centro: il bancone con Sophie (la barista)
@@ -65,13 +106,6 @@ export const zoneMappa: Zona[] = [
     altezza: 22, // ...fino all'80% dell'altezza (80 - 58)
     colore: 'rgba(156, 39, 176, 0.35)',
   },
-
-  // Zone future: per attivarle togli le due barre // davanti a ogni riga,
-  // poi sistema numeri e link. Ricorda la virgola tra una zona e l'altra.
-  //
-  // { nome: 'Stanza in alto a destra', link: '/ufficio/...', sinistra: 0, alto: 0, larghezza: 0, altezza: 0, colore: 'rgba(33, 150, 243, 0.35)' },
-  // { nome: 'Stanza in basso a sinistra', link: '/ufficio/...', sinistra: 0, alto: 0, larghezza: 0, altezza: 0, colore: 'rgba(76, 175, 80, 0.35)' },
-  // { nome: 'Stanza in basso a destra', link: '/ufficio/...', sinistra: 0, alto: 0, larghezza: 0, altezza: 0, colore: 'rgba(255, 152, 0, 0.35)' },
 ]
 
 // ---------------------------------------------------------------------------

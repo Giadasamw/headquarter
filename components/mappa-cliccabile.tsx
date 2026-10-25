@@ -1,6 +1,15 @@
+import { Pixelify_Sans } from 'next/font/google'
 import Link from 'next/link'
 import type { Zona } from '@/app/ufficio/zone'
 import { ApriSophie } from '@/components/sophie'
+import testi from '@/testi/mappa.json'
+import stili from './mappa.module.css'
+
+// Font dei cartellini con il nome delle stanze (solo sulla mappa)
+const pixelify = Pixelify_Sans({ subsets: ['latin'], weight: '400' })
+
+// Testo del cartellino di ogni stanza, da testi/mappa.json
+const TESTI_CARTELLINI: Record<string, string | undefined> = testi
 
 // Colore caldo neutro usato come sfondo attorno alle immagini dell'ufficio.
 // Cambialo qui per modificarlo su tutte e due le pagine.
@@ -46,7 +55,7 @@ export function MappaCliccabile({ immagine, descrizione, larghezzaOriginale, alt
         dentro questo riquadro, quindi restano allineate a qualsiasi dimensione.
       */}
       <div
-        className="relative"
+        className={`relative ${stili.mappa}`}
         style={{
           width: `min(100vw, calc(100dvh * ${proporzione}))`,
           aspectRatio: `${larghezzaOriginale} / ${altezzaOriginale}`,
@@ -114,35 +123,66 @@ export function MappaCliccabile({ immagine, descrizione, larghezzaOriginale, alt
           const etichetta = debug && (
             <span className="rounded bg-black/70 px-2 py-1 text-sm font-medium text-white">{zona.nome}</span>
           )
+          // Il nome della stanza scritto sopra la mappa (se la zona ne ha uno)
+          const testo = TESTI_CARTELLINI[zona.nome]
+          const cartellino = zona.cartellino && testo && (
+            <Cartellino zona={zona} testo={testo} />
+          )
+
           if (zona.apre === 'sophie') {
             return (
               <ApriSophie
                 key={zona.nome}
                 aria-label={zona.nome}
-                className={`${STILE_ZONA} ${STILE_CLICCABILE} rounded-lg hover:shadow-[0_0_40px_12px_rgba(255,255,255,0.55)]`}
+                className={`${STILE_ZONA} ${STILE_CLICCABILE} pointer-events-auto rounded-lg hover:shadow-[0_0_40px_12px_rgba(255,255,255,0.55)]`}
                 style={stile}
               >
                 {etichetta}
               </ApriSophie>
             )
           }
-          return zona.link ? (
+          const area = zona.link ? (
             <Link
-              key={zona.nome}
               href={zona.link}
               aria-label={zona.nome}
-              className={`${STILE_ZONA} ${STILE_CLICCABILE} rounded-lg hover:shadow-[0_0_40px_12px_rgba(255,255,255,0.55)]`}
+              className={`${STILE_ZONA} ${STILE_CLICCABILE} pointer-events-auto rounded-lg hover:shadow-[0_0_40px_12px_rgba(255,255,255,0.55)]`}
               style={stile}
             >
               {etichetta}
             </Link>
           ) : (
-            <div key={zona.nome} className={`${STILE_ZONA} rounded-lg`} style={stile}>
+            // Zona senza pagina (ancora): niente manina e niente alone, solo il cartellino che si evidenzia
+            <div className={`${STILE_ZONA} pointer-events-auto rounded-lg`} style={stile}>
               {etichetta}
+            </div>
+          )
+          return (
+            // Zona e cartellino stanno insieme: passando sopra l'una si evidenzia l'altro
+            <div key={zona.nome} className={stili.stanza}>
+              {area}
+              {cartellino}
             </div>
           )
         })}
       </div>
     </main>
+  )
+}
+
+// Cartellino con il nome della stanza, appoggiato sopra l'immagine.
+// Cliccarlo fa la stessa cosa che cliccare la stanza.
+function Cartellino({ zona, testo }: { zona: Zona; testo: string }) {
+  const posizione = { left: `${zona.cartellino?.sinistra}%`, top: `${zona.cartellino?.alto}%` }
+  const classi = `${stili.cartellino} ${pixelify.className}`
+  // Se la stanza ha una pagina, il cartellino porta lì. Per chi usa la tastiera
+  // o lo screen reader c'è già la zona, quindi il cartellino non si ripete.
+  return zona.link ? (
+    <Link href={zona.link} tabIndex={-1} aria-hidden className={classi} style={posizione}>
+      {testo}
+    </Link>
+  ) : (
+    <span className={classi} style={posizione}>
+      {testo}
+    </span>
   )
 }
