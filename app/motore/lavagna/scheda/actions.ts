@@ -24,6 +24,6 @@ export async function saveContactAction(id: string, _previous: { message: string
     return { message: 'Non è stato possibile salvare. Riprova tra poco.' }
   }
   revalidatePath('/motore/lavagna')
-  revalidatePath(`/motore/lavagna/${id}`)
+  revalidatePath('/motore/lavagna/scheda')
   return { message: 'Aggiornamento salvato.' }
 }

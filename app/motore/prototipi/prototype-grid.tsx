@@ -29,7 +29,7 @@ export function PrototypeGrid({ prototypes }: { prototypes: PrototypeCard[] }) {
       const url = safeUrl(prototype.url)
       return <article key={prototype.id} className={styles.card}>
         <h2 className={styles.cardTitle}>{url ? <a className={styles.prototypeLink} href={url} target="_blank" rel="noopener noreferrer" aria-label={`${prototype.title}, apri in una nuova scheda`}>{prototype.title}<span className={styles.arrow} aria-hidden="true">↗</span></a> : prototype.title}</h2>
-        <p className={styles.company}>{prototype.contact_id ? <Link href={`/motore/lavagna/${prototype.contact_id}`}>{prototype.company || 'Azienda non indicata'}</Link> : 'Nessuna azienda collegata'}</p>
+        <p className={styles.company}>{prototype.contact_id ? <Link href={`/motore/lavagna/scheda?id=${prototype.contact_id}`}>{prototype.company || 'Azienda non indicata'}</Link> : 'Nessuna azienda collegata'}</p>
         <div className={styles.badges}><span className={`${styles.badge} ${prototype.source === 'figma' ? styles.figma : styles.vercel}`}>{prototype.source === 'figma' ? 'Figma' : prototype.source === 'vercel' ? 'Vercel' : 'Fonte non indicata'}</span><span className={`${styles.badge} ${prototype.status !== 'mandato' ? styles.draft : ''}`}>{prototype.status === 'mandato' ? <SentDate value={prototype.sent_at} /> : 'bozza, non ancora mandato'}</span></div>
         {!url && <p className={styles.unavailable}>Collegamento non disponibile</p>}
       </article>
