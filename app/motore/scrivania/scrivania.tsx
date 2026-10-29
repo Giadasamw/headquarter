@@ -20,7 +20,7 @@ export type DeskData = {
   groups: { id: string; title: string; hours: string | null; items: (Item & { inProgress: boolean })[] }[]
   recurring: (Item & { cadence: string; done: boolean })[]
   milestone: { date: string; title: string; criteria: string | null } | null
-  completed: (Item & { group: string | null })[]
+  completed: (Item & { group: string | null; completedAt: string | null })[]
 }
 
 export function Scrivania({ desk }: { desk: DeskData }) {
@@ -178,6 +178,7 @@ export function Scrivania({ desk }: { desk: DeskData }) {
                 <span className={styles.completedText}>
                   <s className={styles.completedTitle}>{item.title}</s>
                   <span className={styles.small}>{[item.group, item.hours].filter(Boolean).join(' · ')}</span>
+                  {item.completedAt && <span className={styles.small}>{item.completedAt}</span>}
                 </span>
                 <button type="button" className={styles.linkButton} disabled={pending} onClick={() => run(item.id, restoreTask, `${item.title}: rimessa in lista`)}>Rimetti in lista</button>
               </li>

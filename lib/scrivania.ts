@@ -215,6 +215,17 @@ export function todayLabel(): string {
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
+/** "Finita il 28 ottobre alle 14:32" (with the year when it isn't this year), in London time. */
+export function completedLabel(completedAt: string | null): string | null {
+  if (!completedAt) return null
+  const date = new Date(completedAt)
+  if (Number.isNaN(date.getTime())) return null
+  const sameYear = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE, year: 'numeric' }).format(date) === todayISO().slice(0, 4)
+  const day = date.toLocaleDateString('it-IT', { timeZone: TIMEZONE, day: 'numeric', month: 'long', ...(sameYear ? {} : { year: 'numeric' }) })
+  const time = date.toLocaleTimeString('it-IT', { timeZone: TIMEZONE, hour: '2-digit', minute: '2-digit' })
+  return `Finita il ${day} alle ${time}`
+}
+
 /** "Entro il 30 novembre" (with the year when it isn't this year). */
 export function dueLabel(dueDate: string | null): string {
   if (!dueDate) return 'Senza scadenza'
