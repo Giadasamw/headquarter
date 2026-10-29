@@ -18,6 +18,6 @@ export async function decideRawContact(id: string, status: 'da contattare' | 'ri
   }
   revalidatePath('/motore/grezzi')
   revalidatePath('/motore/lavagna')
-  revalidatePath(`/motore/lavagna/${id}`)
+  revalidatePath('/motore/lavagna/scheda')
   return {}
 }
