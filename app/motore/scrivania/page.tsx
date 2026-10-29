@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Lora } from 'next/font/google'
 import Link from 'next/link'
 import {
-  cadenceLabel, currentTask, dueLabel, formatMinutes, formatNumber, hoursThisWeek, isListTask, loadPlan,
+  cadenceLabel, completedLabel, currentTask, dueLabel, formatMinutes, formatNumber, hoursThisWeek, isListTask, loadPlan,
   nextMilestone, priorityLine, recurringDoneIds, splitRoomName, todayLabel,
 } from '@/lib/scrivania'
 import { Scrivania, type DeskData } from './scrivania'
@@ -65,7 +65,7 @@ async function loadDesk(): Promise<DeskData | null> {
       .filter((group) => group.items.length > 0),
     recurring: recurring.map((t) => ({ id: t.id, title: t.title, cadence: cadenceLabel(t), hours: formatMinutes(t.estimated_minutes), done: recurringDone.has(t.id) })),
     milestone: milestone && { date: dueLabel(milestone.due_date), title: milestone.title, criteria: milestone.success_criteria },
-    completed: completed.map((t) => ({ id: t.id, title: t.title, group: groupOf(t.parent_task_id), hours: formatMinutes(t.estimated_minutes) })),
+    completed: completed.map((t) => ({ id: t.id, title: t.title, group: groupOf(t.parent_task_id), hours: formatMinutes(t.estimated_minutes), completedAt: completedLabel(t.completed_at) })),
   }
 }
 
